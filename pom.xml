@@ -20,6 +20,13 @@
         </repository>
     </repositories>
 
+    <distributionManagement>
+        <repository>
+            <id>Pixel-Services</id>
+            <url>https://maven.pixel-services.com/releases</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.github.Carleslc.Simple-YAML</groupId>

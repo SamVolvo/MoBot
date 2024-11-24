@@ -8,41 +8,106 @@
 </div>
 
 ## Overview
+MoBot is a modular bot framework for Discord. It allows developers to create, extend, and manage custom modules that hook into the bot to add rich, interactive features.
 
-MoBot is a modular, extensible bot framework designed for Discord.
-With MoBot, developers can create and manage custom modules that hook into MoBot,
-allowing for rich, interactive features to be added seamlessly.
-Each module is loaded independently and can contain its own configuration, making it easy to extend and customize.
+---
 
-##  Table of Contents
-- [Roadmap](#roadmap)
-- [Features](#features)
-- [Module Development](#module-development)
-   - [Creating a Module](#creating-a-module)
-   - [Module Configuration](#module-configuration)
-   - [Loading and Managing Modules](#loading-and-managing-modules)
-- [Configuration](#configuration)
-- [Contributing](#contributing)
+<details>
+<summary><strong>📋 Table of Contents</strong></summary>
+
+- [Setup Project](#setup-project)
+- [Installation](#installation)
+- [Creating a Module](#creating-a-module)
+- [Module Configuration](#module-configuration)
+- [Loading and Managing Modules](#loading-and-managing-modules)
 - [License](#license)
 
-## Roadmap
-- [x] Modules
-  - [x] Load modules
-  - [x] Load module information from `module.yml`
-  - [x] Execute `preEnable`, `onEnable`, `onDisable` and `postDisable`
-  - [x] Account for priority when enabling
-- [ ] Convenient Addons
-   - [x] Slash Command Addon
-   - [ ] ????
-- [x] Module Configs
+</details>
 
+---
 
-## Features
+## Setup Project
 
-- **Modular Architecture:** Create and load custom modules easily.
-- **Discord Integration:** Built-in support for Discord features like slash commands and event listeners.
--
-- **Flexible Configuration:** Each module can have its own `config.yml`, stored in a structured directory.
-- **Logging:** Centralized logging for each module, making it easy to debug and monitor activity.
-- **Error Reporting:** Identify which module errors are coming from, with detailed logging.
+To create a module for MoBot, follow these steps:
 
+1. **Create a Java Project** (Maven/Gradle):
+  - **Maven:**
+    Add the MoBot dependency in `pom.xml`:
+
+    ```xml
+    <dependency>
+        <groupId>net.vitacraft</groupId>
+        <artifactId>MoBot</artifactId>
+        <version>VERSION</version> <!-- Replace VERSION -->
+    </dependency>
+    ```
+
+  - **Gradle:**
+    Add the dependency in `build.gradle`:
+
+    ```gradle
+    dependencies {
+        implementation "net.vitacraft:MoBot:VERSION"  // Replace VERSION
+    }
+    ```
+
+   Find the latest version [here](https://maven.pixel-services.com/#/releases/net/vitacraft/MoBot).
+
+2. **Create Main Module Class**: Extend the `MBModule` class:
+
+    ```java
+    public class WelcomeModule extends MBModule {
+        @Override
+        public void onEnable() {
+            getLogger().info("WelcomeModule enabled!");
+        }
+
+        @Override
+        public void onDisable() {
+            getLogger().info("WelcomeModule disabled!");
+        }
+    }
+    ```
+
+3. **Create Service File**: Create `resources/META-INF/services/net.vitacraft.api.MBModule`, and to this file add **one line** to it: the fully qualified name of your main module class, for example:
+
+    ```text
+    com.example.WelcomeModule
+    ```
+
+---
+
+## Installation
+
+1. **Install MoBot** by adding it as a dependency in your Maven or Gradle project (see the Setup Project section).
+
+2. **Create `bot.yml`** file inside the `resources` folder to configure your bot:
+
+    ```yaml
+    name: WelcomeModule
+    version: '1.0.0'
+    description: A Test Module
+    dependencies: []
+    authors: [Your Name]
+    priority: DEFAULT
+    ```
+
+---
+
+## Creating a Module
+
+1. **Extend `MBModule`**:
+   In your Java class, override `onEnable()` and `onDisable()`:
+
+   ```java
+   public class WelcomeModule extends MBModule {
+       @Override
+       public void onEnable() {
+           getLogger().info("Module enabled!");
+       }
+
+       @Override
+       public void onDisable() {
+           getLogger().info("Module disabled!");
+       }
+   }
